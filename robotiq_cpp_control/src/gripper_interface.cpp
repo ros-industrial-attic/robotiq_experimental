@@ -24,6 +24,7 @@
 
 
 #include "gripper_interface.h"
+using namespace robotiq_cpp_control;
 
 
 GripperInterface::GripperInterface()
