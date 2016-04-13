@@ -57,13 +57,13 @@ int main(int argc, char** argv) {
   gripper.reset();
   
   ROS_INFO("[RSGripperInterfaceTest] testing setMode");
-  gripper.setMode(MODE::MODE_BASIC);
+  gripper.setMode(Modes::MODE_BASIC);
   ros::Duration(1.0).sleep();
-  gripper.setMode(MODE::MODE_PINCH);
+  gripper.setMode(Modes::MODE_PINCH);
   ros::Duration(1.0).sleep();
-  gripper.setMode(MODE::MODE_WIDE);
+  gripper.setMode(Modes::MODE_WIDE);
   ros::Duration(1.0).sleep();
-  gripper.setMode(MODE::MODE_SCISSOR);
+  gripper.setMode(Modes::MODE_SCISSOR);
   ros::Duration(1.0).sleep();
   
   ROS_INFO("[RSGripperInterfaceTest] testing setSpeed, fullOpen, fullClose");
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
   gripper.setPosition(128);
 
   gripper.setSpeed(255);
-  gripper.setMode(MODE::MODE_PINCH);
+  gripper.setMode(Modes::MODE_PINCH);
   gripper.setSpeed(128);
   gripper.setPosition(255, 0, 128);
   ROS_INFO("[RSGripperInterfaceTest] Testing complete.");

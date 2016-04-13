@@ -48,7 +48,7 @@
 namespace robotiq_cpp_control
 {
 
-namespace MODE
+namespace Modes
 {
 /**
 * Possible modes for the gripper
@@ -60,10 +60,10 @@ enum Mode {
     MODE_SCISSOR
 };
 }
-typedef MODE::Mode Mode;
+typedef Modes::Mode Mode;
 
 
-namespace STATUS
+namespace Statuses
 {
 /**
 * Possible status from the gripper
@@ -77,7 +77,7 @@ enum gripperStatus
     MAJOR_FAULT=15
 };
 }
-typedef STATUS::gripperStatus gripperStatus;
+typedef Statuses::gripperStatus gripperStatus;
 
 
 class GripperInterface {
