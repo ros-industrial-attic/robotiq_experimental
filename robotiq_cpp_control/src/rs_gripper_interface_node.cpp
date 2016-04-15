@@ -23,6 +23,7 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <rs_gripper_interface.h>
+using namespace robotiq_cpp_control;
 
 int main(int argc, char **argv)
 {

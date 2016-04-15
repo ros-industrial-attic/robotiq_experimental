@@ -24,6 +24,7 @@
 
 
 #include "rc_gripper_interface.h"
+using namespace robotiq_cpp_control;
 
 
 RCGripperInterface::RCGripperInterface() :
@@ -206,27 +207,21 @@ void RCGripperInterface::setForce(int force)
 void RCGripperInterface::cb_getGripperStatus(const robotiq_c_model_control::CModel_robot_input& msg)
 {
   status = msg;
-  
+
   switch(status.gFLT) {
-    case 0:
-      break;
-    case 5:
+    case gripperStatus::ACTIVATING:
       ROS_WARN_THROTTLE(1, "[RCGripperInterface] Activation is not complete!");
       break;
-    case 6:
+    case gripperStatus::CHANGING_MODE:
       ROS_WARN_THROTTLE(1, "[RCGripperInterface] Mode change is not complete!");
       break;
-    case 7:
+    case gripperStatus::NOT_ACTIVATED:
       ROS_WARN_THROTTLE(1, "[RCGripperInterface] Gripper is not activated yet!");
       break;
-    case 9:
-    case 10:
-    case 11:
+    case gripperStatus::MINOR_FAULT:
       ROS_ERROR_STREAM_THROTTLE(10, "[RCGripperInterface] Minor fault detected, #" << (int)status.gFLT);
       break;
-    case 13:
-    case 14:
-    case 15:
+    case gripperStatus::MAJOR_FAULT:
       ROS_FATAL_STREAM_THROTTLE(10, "[RCGripperInterface] Major fault detected, #" << (int)status.gFLT);
       break;
     default:

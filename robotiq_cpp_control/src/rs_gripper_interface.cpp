@@ -24,11 +24,7 @@
 
 
 #include "rs_gripper_interface.h"
-
-std::vector<std::string> RSGripperInterface::fingerNames 
-  {"finger_1_link_0", "finger_1_link_1", "finger_1_link_2", "finger_1_link_3",
-  "finger_2_link_0", "finger_2_link_1", "finger_2_link_2", "finger_2_link_3",
-  "finger_middle_link_0", "finger_middle_link_1", "finger_middle_link_2", "finger_middle_link_3"}; 
+using namespace robotiq_cpp_control;
 
 RSGripperInterface::RSGripperInterface(bool _sim) :
   n(),
@@ -195,10 +191,6 @@ void RSGripperInterface::setMode(int newMode)
   sendCommand();
   
   if(block) {
-    while(status.gMOD != newMode) {
-      ROS_WARN_DELAYED_THROTTLE(5, "[RSGripperInterface] Waiting for mode change to echo...");
-      //wait for mode to be echoed
-    }
     while(status.gIMC != 3) {
       ROS_INFO_DELAYED_THROTTLE(5, "[RSGripperInterface] Waiting for mode change to complete...");
     }
@@ -370,25 +362,19 @@ void RSGripperInterface::cb_getGripperStatus(const robotiq_s_model_control::SMod
   //msg.gCUS; //scissor current
   
   switch(status.gFLT) {
-    case 0:
-      break;
-    case 5:
+    case gripperStatus::ACTIVATING:
       ROS_WARN_THROTTLE(1, "[RSGripperInterface] Activation is not complete!");
       break;
-    case 6:
+    case gripperStatus::CHANGING_MODE:
       ROS_WARN_THROTTLE(1, "[RSGripperInterface] Mode change is not complete!");
       break;
-    case 7:
+    case gripperStatus::NOT_ACTIVATED:
       ROS_WARN_THROTTLE(1, "[RSGripperInterface] Gripper is not activated yet!");
       break;
-    case 9:
-    case 10:
-    case 11:
+    case gripperStatus::MINOR_FAULT:
       ROS_ERROR_STREAM_THROTTLE(10, "[RSGripperInterface] Minor fault detected, #" << (int)status.gFLT);
       break;
-    case 13:
-    case 14:
-    case 15:
+    case gripperStatus::MAJOR_FAULT:
       ROS_FATAL_STREAM_THROTTLE(10, "[RSGripperInterface] Major fault detected, #" << (int)status.gFLT);
       break;
     default:
